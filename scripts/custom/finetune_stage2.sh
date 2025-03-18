@@ -26,9 +26,9 @@ torchrun --nnodes $WORLD_SIZE \
     --master_addr=$MASTER_ADDR \
     --master_port=$MASTER_PORT \
     --node_rank $RANK \
-    videollama2/train_flash_attn_score.py \
+    streammind/train_flash_attn_score.py \
     --score_dataset True \
-    --score_dataset_train_llm True \
+    --score_dataset_train_cls True \
     --output_dir ${OUTP_DIR}/${RUN_NAME}/finetune_${RUN_NAME} \
     --deepspeed scripts/zero2.json \
     --version v1_mistral \
@@ -54,7 +54,7 @@ torchrun --nnodes $WORLD_SIZE \
     --save_strategy "steps" \
     --save_steps 500 \
     --save_total_limit 99 \
-    --learning_rate 2e-5 \
+    --learning_rate 2e-6 \
     --weight_decay 0. \
     --warmup_ratio 0.03 \
     --lr_scheduler_type "cosine" \

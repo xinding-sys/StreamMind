@@ -73,7 +73,7 @@ pip install flash-attn==2.5.8 --no-build-isolation
 
 ### Quick Start
 
-1. Training Data Structure:
+<!-- 1. Training Data Structure:
 ```bash
 VideoLLaMA2
 ├── datasets
@@ -85,11 +85,15 @@ VideoLLaMA2
 |   |   ├── llava_image_tune/  # Available at: https://pan.baidu.com/s/1l-jT6t_DlN5DTklwArsqGw?pwd=o6ko
 |   |   ├── videochatgpt_tune/ # Available at: https://pan.baidu.com/s/10hJ_U7wVmYTUo75YHc_n8g?pwd=g1hf
 |   |   └── videochatgpt_llavaimage_tune.json # Available at: https://drive.google.com/file/d/1zGRyVSUMoczGq6cjQFmT0prH67bu2wXD/view, including 100K video-centric, 625K image-centric and 40K text-only conversations
-```
-2. Command:
+``` -->
+1. Command:
 ```bash
-# VideoLLaMA2-vllava pretraining
-bash scripts/vllava/stc/pretrain.sh
+# Streammind train stage 1
+bash scripts/custom/finetune_stage1.sh
+# Streammind train stage 2
+bash scripts/custom/finetune_stage2.sh
+# Streammind evaluate
+bash scripts/custom/eval/evaluate.sh
 # VideoLLaMA2-vllava finetuning
 bash scripts/vllava/stc/finetune.sh
 ```
