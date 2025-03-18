@@ -58,12 +58,20 @@ pip install flash-attn==2.5.8 --no-build-isolation
 ## 🚀 Main Results
 
 ### Streaming Dialogue
-<p><img src="https://github.com/xinding-sys/StreamMind/blob/main/assets/result1.png" width="800" "/></p>
-<p><img src="https://github.com/xinding-sys/StreamMind/blob/main/assets/result2.png" width="800" "/></p>
+<div align="center">
+    <img src="./assets/result1.png" alt="overview">
+</div>
+<div align="center">
+    <img src="./assets/result2.png" alt="overview">
+</div>
 
 ### Offline benchmark
-<p><img src="https://github.com/xinding-sys/StreamMind/blob/main/assets/result3.png" width="800" "/></p>
-<p><img src="https://github.com/xinding-sys/StreamMind/blob/main/assets/result4.png" width="800" "/></p>
+<div align="center">
+    <img src="./assets/result3.png" alt="overview">
+</div>
+<div align="center">
+    <img src="./assets/result4.png" alt="overview">
+</div>
 
 
 ## 🗝️ Training & Evaluation
