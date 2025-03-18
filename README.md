@@ -33,8 +33,9 @@ StreamMind: Unlocking Full Frame Rate Streaming Video Dialogue through Event-Gat
 
 
 <!-- <img src="https://github.com/xinding-sys/StreamMind/blob/main/assets/framework_v2.png" width="400" /> -->
-<iframe src="https://raw.githubusercontent.com/xinding-sys/StreamMind/main/assets/framework_v2.pdf" width="800" height="600"></iframe>
-
+<!-- <iframe src="https://raw.githubusercontent.com/xinding-sys/StreamMind/main/assets/framework_v2.pdf" width="800" height="600"></iframe>
+ -->
+![overview](./assets/framework_v2.png)
 ## 🛠️ Requirements and Installation
 Basic Dependencies:
 * Python >= 3.10
