@@ -16,16 +16,10 @@ echo $LOCAL_BATCH_SIZE
 # Log Arguments
 export TRANSFORMERS_OFFLINE=1
 export WANDB_PROJECT=videollama2_mamba
-RUN_NAME=finetune_videollama2_mamba_batch1_stream_epoch15_8a100_gradient_accumulation_steps2_only_trainclsnet
-DATA_DIR=/home/v-dingxin/blob/video_llm/datasets
-OUTP_DIR=/home/v-dingxin/videollama2_plus-main/output
-# --pretrain_mm_mlp_adapter ${OUTP_DIR}/${WANDB_PROJECT}/pretrain_${RUN_NAME}/mm_projector.bin \
-#    --tune_mm_mlp_adapter True \
-    # --score_dataset_train_cls True \
-    # --score_dataset_train_llm True \
-    # --model_name_or_path /home/v-dingxin/blob/VideoLLaMA2-7B  \ 
-    # --model_name_or_path /home/v-dingxin/blob/finetune_videollama2_mamba_batch1_newcode_1120_mambaprojector_epoch15_8a100/checkpoint-20600
-    # --model_name_or_path /home/v-dingxin/blob/VideoLLaMA2-7B \
+RUN_NAME=finetune_streammind
+DATA_DIR=datasets
+OUTP_DIR=output
+
 
 torchrun --nnodes $WORLD_SIZE \
     --nproc_per_node $NPROC_PER_NODE \
@@ -38,8 +32,8 @@ torchrun --nnodes $WORLD_SIZE \
     --output_dir ${OUTP_DIR}/${RUN_NAME}/finetune_${RUN_NAME} \
     --deepspeed scripts/zero2.json \
     --version v1_mistral \
-    --model_name_or_path /home/v-dingxin/blob/VideoLLaMA2-7B \
-    --vision_tower /home/v-dingxin/blob/clip-vit-large-patch14-336 \
+    --model_name_or_path VideoLLaMA2-7B \
+    --vision_tower clip-vit-large-patch14-336 \
     --freeze_backbone False \
     --mm_projector_type mamba \
     --data_path   ${DATA_DIR}/videollava_sft/videochatgpt_tune_.json \
