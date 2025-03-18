@@ -1,0 +1,61 @@
+description: SLM Training for Mobile Tasks Automation
+
+environment:
+  image: amlt-sing/acpt-rocm6.1_ubuntu20.04_py3.9_pytorch2.1.2 
+  setup:
+    - git init .
+    - git remote add origin https://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@github.com/MaginaDai/reward_training.git
+    - git fetch origin master
+    - git checkout -b master origin/master
+    - ls
+    - bash register.sh
+
+target:
+  service: sing
+  name: msroctobasicvc
+  workspace_name: msra-sh-aml-ws
+
+storage:
+  input:
+    storage_account_name: shijiang # check with your mentor about the account name
+    container_name: magent # check with your mentor about the container name
+    mount_dir: /blob
+  
+  output:
+    storage_account_name: shijiang # check with your mentor about the account name
+    container_name: results # check with your mentor about the container name
+    mount_dir: /results
+    is_output: True
+
+data:
+  storage_id: input
+  local_dir: $CONFIG_DIR/datasets
+  remote_dir: data/datasets_v2
+
+
+env_defaults:
+  NODES: 8
+  GPUS: 8
+  MEM: 40
+
+jobs:
+
+- name: round4_10ep
+  identity: managed
+  sku: 8x 192G8-MI300X-IB-xGMI
+  process_count_per_node: 1
+  sla_tier: standard # Default: premium
+  submit_args:
+      env:
+        _AZUREML_SINGULARITY_JOB_UAI: "/subscriptions/c4c534bc-9978-4974-9c87-551f7c5754ef/resourceGroups/msra-sh-aml-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msra-sh-aml-uai"
+  tags: [Project_Name:Embedded_Deep_Learning,ProjectID:PRJ-0452-A31,Experiment:Verifier_Fine-tuning]
+  command:
+  - |
+    if [ "$$RANK" = "0" ]; then
+      echo "Rank $$RANK -> Launching deepspeed on master node..."
+      deepspeed --hostfile=hosts.txt --num_nodes=8 --num_gpus=8 --master_addr node-0 train.py  -s round4_10ep --round 4 --model "Llama-31-8B" --reward_type score -t 0 --cluster 1 --epoch 10 -lr 1e-4 --train_batch_size 32 --eval_batch_size 16 --train_from_scratch=1
+    else
+      echo "Rank $$RANK -> Not the master, doing nothing."
+    fi
+
+

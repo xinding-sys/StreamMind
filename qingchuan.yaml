@@ -1,0 +1,48 @@
+description: "CoT train"
+
+target:
+  service: aml
+  name: sfm-madft-nc96adsa100v4-swcen
+
+
+environment:
+  image: amlt-sing/acpt-2.2.2-py3.10-cuda12.1
+  setup:
+  - pip install transformers==4.34.0 datasets==2.14.0 pandas rdkit numpy==1.26.4 wandb accelerate==0.24.1 deepspeed
+
+storage:
+  sfmdataeastus2:
+    storage_account_name: sfmdataeastus2
+    container_name: v-qingczhang
+    mount_dir: /mnt/v-qingczhang
+  nlm:
+    storage_account_name: sfmdataeastus2
+    container_name: nlm
+    mount_dir: /mnt/nlm
+  rl4s:
+    storage_account_name: sfmdataeastus2
+    container_name: rl4s
+    mount_dir: /mnt/rl4s
+code:
+  local_dir: .
+
+jobs:
+- name: mol1b_cot_train
+  sku: G4
+  mpi: true
+  # process_count_per_node: 8
+  submit_args:
+    env:
+      TRAIN_DATA_PATH: '/mnt/v-qingczhang/mol_instruction/precessed_train.json'
+      MODEL_PATH: '/mnt/v-qingczhang/mol_instruction/mol1b_embedonly_contrast_opt'
+      OUTPUT_PATH: '/mnt/v-qingczhang/mol_instruction/mol1b_contrast_0.5_opt'
+      WANDB_API_KEY: '66ff8c950b4d24905ff0ff016dc92617a83abca8'
+  
+  command:
+    # - nvidia-smi
+    # - curl -Lk 'https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64' --output vscode_cli.tar.gz
+    # - tar -xzf vscode_cli.tar.gz
+    # - ./code tunnel --name "debug" --accept-server-license-terms
+    # - export OMP_NUM_THREADS=4
+    # - export ALPHA=0.5
+    - deepspeed --num_gpus=4 newtrain.py
