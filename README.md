@@ -73,7 +73,7 @@ pip install flash-attn==2.5.8 --no-build-isolation
 
 ### Quick Start
 
-<!-- <!-- <!-- 1. Training Data Structure: -->
+1. Training Data Structure:
 ```bash
 StreamMind
 ├── Online_datasets
@@ -93,10 +93,8 @@ StreamMind
 |   |   ├── llava_image_tune/  
 |   |   ├── videochatgpt_tune/ 
 |   |   └── videochatgpt_llavaimage_tune.json 
-``` -->
-
-
-1. Command:
+```
+2. Command:
 ```bash
 # Streammind train stage 1
 bash scripts/custom/finetune_stage1.sh
