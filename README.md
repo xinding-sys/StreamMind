@@ -29,99 +29,41 @@ StreamMind: Unlocking Full Frame Rate Streaming Video Dialogue through Event-Gat
  -->
 
 ## 📰 News
-* **[2024.06.25]**  🔥🔥 As of Jun 25, our [VideoLLaMA2-7B-16F](https://huggingface.co/DAMO-NLP-SG/VideoLLaMA2-7B-16F) is the **Top-1** ~7B-sized VideoLLM on the [MLVU Leaderboard](https://github.com/JUNJIE99/MLVU?tab=readme-ov-file#trophy-mini-leaderboard).
-* **[2024.06.18]**  🔥🔥 As of Jun 18, our [VideoLLaMA2-7B-16F](https://huggingface.co/DAMO-NLP-SG/VideoLLaMA2-7B-16F) is the **Top-1** ~7B-sized VideoLLM on the [VideoMME Leaderboard](https://video-mme.github.io/home_page.html#leaderboard).
-* **[2024.06.17]**  👋👋 Update technical report with the latest results and the missing references. If you have works closely related to VideoLLaMA 2 but not mentioned in the paper, feel free to let us know.  
-* **[2024.06.14]**  🔥🔥 [Online Demo](https://huggingface.co/spaces/lixin4ever/VideoLLaMA2) is available.
 * **[2025.03.18]**  Release training, evaluation, and serving codes of StreamMind.
 
 
-<img src="https://github.com/DAMO-NLP-SG/VideoLLaMA2/assets/18526640/b9faf24f-bdd2-4728-9385-acea17ea086d" width="800" />
+<img src="https://github.com/xinding-sys/StreamMind/blob/main/assets/framework.png" width="800" />
 
 ## 🛠️ Requirements and Installation
 Basic Dependencies:
 * Python >= 3.10
-* Pytorch >= 2.2.0
+* Pytorch >= 2.5.1
 * CUDA Version >= 11.8
-* transformers >= 4.40.0 (for mistral tokenizer)
+* transformers >= 4.44.2 (for mistral tokenizer)
 * tokenizers >= 0.19.1 (for mistral tokenizer)
 
 **[Online Mode]** Install required packages (better for development):
 ```bash
-git clone https://github.com/DAMO-NLP-SG/VideoLLaMA2
-cd VideoLLaMA2
+git clone https://github.com/xinding-sys/StreamMind
+cd StreamMind
 pip install -r requirements.txt
-pip install flash-attn==2.5.8 --no-build-isolation
-```
-
-**[Offline Mode]** Install VideoLLaMA2 as a Python package (better for direct use):
-```bash
-git clone https://github.com/DAMO-NLP-SG/VideoLLaMA2
-cd VideoLLaMA2
-pip install --upgrade pip  # enable PEP 660 support
-pip install -e .
 pip install flash-attn==2.5.8 --no-build-isolation
 ```
 
 ## 🚀 Main Results
 
-### Multi-Choice Video QA & Video Captioning
-<p><img src="https://github.com/DAMO-NLP-SG/VideoLLaMA2/assets/18526640/9cc4a5ae-d850-4eef-bd51-83688b94698e" width="800" "/></p>
+### Streaming Dialogue
+<p><img src="https://github.com/xinding-sys/StreamMind/blob/main/assets/result1.png" width="800" "/></p>
+<p><img src="https://github.com/xinding-sys/StreamMind/blob/main/assets/result2.png" width="800" "/></p>
 
-
-###  Open-Ended Video QA
-<p><img src="https://github.com/DAMO-NLP-SG/VideoLLaMA2/assets/18526640/2ed7aa53-db56-4829-8375-85aefbc5120a" width="800" "/></p>
-
-## :earth_americas: Model Zoo
-| Model Name     | Model Type | Visual Encoder | Language Decoder | # Training Frames |
-|:----------------|:------------:|:----------------|:------------------|:----------------:|
-| [VideoLLaMA2-7B-Base](https://huggingface.co/DAMO-NLP-SG/VideoLLaMA2-7B-Base)  | Base  | [clip-vit-large-patch14-336](https://huggingface.co/openai/clip-vit-large-patch14-336) | [Mistral-7B-Instruct-v0.2](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2)  | 8 |
-| [VideoLLaMA2-7B](https://huggingface.co/DAMO-NLP-SG/VideoLLaMA2-7B)  | Chat | [clip-vit-large-patch14-336](https://huggingface.co/openai/clip-vit-large-patch14-336) | [Mistral-7B-Instruct-v0.2](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2)  | 8 |
-| [VideoLLaMA2-7B-16F-Base](https://huggingface.co/DAMO-NLP-SG/VideoLLaMA2-7B-16F-Base)  | Base  | [clip-vit-large-patch14-336](https://huggingface.co/openai/clip-vit-large-patch14-336) | [Mistral-7B-Instruct-v0.2](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2)  | 16 |
-| [VideoLLaMA2-7B-16F](https://huggingface.co/DAMO-NLP-SG/VideoLLaMA2-7B-16F)  | Chat | [clip-vit-large-patch14-336](https://huggingface.co/openai/clip-vit-large-patch14-336) | [Mistral-7B-Instruct-v0.2](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2)  | 16 |
-
-
-## [🤗 Demo](https://huggingface.co/spaces/lixin4ever/VideoLLaMA2)
-
-It is highly recommended to try our [online demo](https://huggingface.co/spaces/lixin4ever/VideoLLaMA2) first.
-
-To run a video-based LLM (Large Language Model) web demonstration on your device, you will first need to ensure that you have the necessary model checkpoints prepared, followed by adhering to the steps outlined to successfully launch the demo.
-
-### Single-model Version
-
-* Launch a gradio app directly ([VideoLLaMA2-7B](https://huggingface.co/DAMO-NLP-SG/VideoLLaMA2-7B) is adopted by default):
-```bash
-python videollama2/serve/gradio_web_server_adhoc.py
-```
-
-### Multi-model Version
-
-1. Launch a global controller
-```bash
-cd /path/to/VideoLLaMA2
-python -m videollama2.serve.controller --host 0.0.0.0 --port 10000
-```
-
-2. Launch a gradio webserver
-```bash
-python -m videollama2.serve.gradio_web_server --controller http://localhost:10000 --model-list-mode reload
-```
-
-3. Launch one or multiple model workers
-```bash
-#  export HF_ENDPOINT=https://hf-mirror.com  # If you are unable to access Hugging Face, try to uncomment this line.
-python -m videollama2.serve.model_worker --host 0.0.0.0 --controller http://localhost:10000 --port 40000 --worker http://localhost:40000 --model-path /PATH/TO/MODEL1
-python -m videollama2.serve.model_worker --host 0.0.0.0 --controller http://localhost:10000 --port 40001 --worker http://localhost:40001 --model-path /PATH/TO/MODEL2
-python -m videollama2.serve.model_worker --host 0.0.0.0 --controller http://localhost:10000 --port 40002 --worker http://localhost:40002 --model-path /PATH/TO/MODEL3
-...
-```
+### Offline benchmark
+<p><img src="https://github.com/xinding-sys/StreamMind/blob/main/assets/result3.png" width="800" "/></p>
+<p><img src="https://github.com/xinding-sys/StreamMind/blob/main/assets/result4.png" width="800" "/></p>
 
 
 ## 🗝️ Training & Evaluation
 
 ### Quick Start
-
-To facilitate further development on top of our codebase, we provide a quick-start guide on how to train a customized [VideoLLaMA2](https://github.com/DAMO-NLP-SG/VideoLLaMA2) with [VideoLLaVA](https://github.com/PKU-YuanGroup/Video-LLaVA) dataset and evaluate the trained model on the mainstream video-llm benchmarks.
 
 1. Training Data Structure:
 ```bash
