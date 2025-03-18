@@ -73,18 +73,26 @@ pip install flash-attn==2.5.8 --no-build-isolation
 
 ### Quick Start
 
-<!-- 1. Training Data Structure:
+<!-- <!-- <!-- 1. Training Data Structure: -->
 ```bash
-VideoLLaMA2
-├── datasets
+StreamMind
+├── Online_datasets
+│   ├── ego4d
+|   |   ├── v2 
+|   |   |   ├── annotations 
+|   |   |   ├── full_scale
+│   ├── MatchTime
+|   |   ├── SN-caption 
+|   |   ├── Video
+├── Offline_datasets
 │   ├── videollava_pt
-|   |   ├── llava_image/ # Available at: https://pan.baidu.com/s/17GYcE69FcJjjUM0e4Gad2w?pwd=9ga3 or https://drive.google.com/drive/folders/1QmFj2FcMAoWNCUyiUtdcW0-IOhLbOBcf?usp=drive_link
-|   |   ├── valley/      # Available at: https://pan.baidu.com/s/1jluOimE7mmihEBfnpwwCew?pwd=jyjz or https://drive.google.com/drive/folders/1QmFj2FcMAoWNCUyiUtdcW0-IOhLbOBcf?usp=drive_link
-|   |   └── valley_llavaimage.json # Available at: https://drive.google.com/file/d/1zGRyVSUMoczGq6cjQFmT0prH67bu2wXD/view, including 703K video-text and 558K image-text pairs
+|   |   ├── llava_image/ 
+|   |   ├── valley/      
+|   |   └── valley_llavaimage.json 
 │   ├── videollava_sft
-|   |   ├── llava_image_tune/  # Available at: https://pan.baidu.com/s/1l-jT6t_DlN5DTklwArsqGw?pwd=o6ko
-|   |   ├── videochatgpt_tune/ # Available at: https://pan.baidu.com/s/10hJ_U7wVmYTUo75YHc_n8g?pwd=g1hf
-|   |   └── videochatgpt_llavaimage_tune.json # Available at: https://drive.google.com/file/d/1zGRyVSUMoczGq6cjQFmT0prH67bu2wXD/view, including 100K video-centric, 625K image-centric and 40K text-only conversations
+|   |   ├── llava_image_tune/  
+|   |   ├── videochatgpt_tune/ 
+|   |   └── videochatgpt_llavaimage_tune.json 
 ``` -->
 1. Command:
 ```bash
@@ -95,43 +103,6 @@ bash scripts/custom/finetune_stage2.sh
 # Streammind evaluate
 bash scripts/custom/eval/evaluate.sh
 ```
-3. Evaluation Data Structure:
-```bash
-VideoLLaMA2
-├── eval
-│   ├── egoschema # Official website: https://github.com/egoschema/EgoSchema
-|   |   ├── good_clips_git/ # Available at: https://drive.google.com/drive/folders/1SS0VVz8rML1e5gWq7D7VtP1oxE2UtmhQ
-|   |   └── questions.json  # Available at: https://github.com/egoschema/EgoSchema/blob/main/questions.json
-│   ├── mvbench # Official website: https://huggingface.co/datasets/OpenGVLab/MVBench
-|   |   ├── video/
-|   |   |   ├── clever/
-|   |   |   └── ...
-|   |   └── json/
-|   |   |   ├── action_antonym.json
-|   |   |   └── ...
-│   ├── perception_test_mcqa # Official website: https://huggingface.co/datasets/OpenGVLab/MVBench
-|   |   ├── videos/ # Available at: https://storage.googleapis.com/dm-perception-test/zip_data/test_videos.zip
-|   |   └── mc_question_test.json # Download from https://storage.googleapis.com/dm-perception-test/zip_data/mc_question_test_annotations.zip
-│   ├── videomme # Official website: https://video-mme.github.io/home_page.html#leaderboard
-|   |   ├── test-00000-of-00001.parquet
-|   |   ├── videos/
-|   |   └── subtitles/
-│   ├── Activitynet_Zero_Shot_QA # Official website: https://github.com/MILVLG/activitynet-qa
-|   |   ├── all_test/   # Available at: https://mbzuaiac-my.sharepoint.com/:u:/g/personal/hanoona_bangalath_mbzuai_ac_ae/EatOpE7j68tLm2XAd0u6b8ABGGdVAwLMN6rqlDGM_DwhVA?e=90WIuW
-|   |   ├── test_q.json # Available at: https://github.com/MILVLG/activitynet-qa/tree/master/dataset
-|   |   └── test_a.json # Available at: https://github.com/MILVLG/activitynet-qa/tree/master/dataset
-│   ├── MSVD_Zero_Shot_QA # Official website: https://github.com/xudejing/video-question-answering
-|   |   ├── videos/     
-|   |   ├── test_q.json 
-|   |   └── test_a.json
-│   ├── videochatgpt_gen # Official website: https://github.com/mbzuai-oryx/Video-ChatGPT/tree/main/quantitative_evaluation
-|   |   ├── Test_Videos/ # Available at: https://mbzuaiac-my.sharepoint.com/:u:/g/personal/hanoona_bangalath_mbzuai_ac_ae/EatOpE7j68tLm2XAd0u6b8ABGGdVAwLMN6rqlDGM_DwhVA?e=90WIuW
-|   |   ├── Test_Human_Annotated_Captions/ # Available at: https://mbzuaiac-my.sharepoint.com/personal/hanoona_bangalath_mbzuai_ac_ae/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fhanoona%5Fbangalath%5Fmbzuai%5Fac%5Fae%2FDocuments%2FVideo%2DChatGPT%2FData%5FCode%5FModel%5FRelease%2FQuantitative%5FEvaluation%2Fbenchamarking%2FTest%5FHuman%5FAnnotated%5FCaptions%2Ezip&parent=%2Fpersonal%2Fhanoona%5Fbangalath%5Fmbzuai%5Fac%5Fae%2FDocuments%2FVideo%2DChatGPT%2FData%5FCode%5FModel%5FRelease%2FQuantitative%5FEvaluation%2Fbenchamarking&ga=1
-|   |   ├── generic_qa.json     # These three json files available at: https://mbzuaiac-my.sharepoint.com/personal/hanoona_bangalath_mbzuai_ac_ae/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fhanoona%5Fbangalath%5Fmbzuai%5Fac%5Fae%2FDocuments%2FVideo%2DChatGPT%2FData%5FCode%5FModel%5FRelease%2FQuantitative%5FEvaluation%2Fbenchamarking%2FBenchmarking%5FQA&ga=1
-|   |   ├── temporal_qa.json
-|   |   └── consistency_qa.json
-```
-
 
 ## 📑 Citation
 
