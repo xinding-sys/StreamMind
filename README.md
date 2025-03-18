@@ -11,19 +11,19 @@ StreamMind: Unlocking Full Frame Rate Streaming Video Dialogue through Event-Gat
 [![arXiv](https://img.shields.io/badge/Arxiv-2503.06220-AD1C18.svg?logo=arXiv)](https://arxiv.org/html/2503.06220v1) <br>
 
 </h5>
-
+<!-- 
 <details open><summary>💡 Some other multimodal-LLM projects from our team may interest you ✨. </summary><p>
 <!--  may -->
 
-> [**Video-LLaMA: An Instruction-tuned Audio-Visual Language Model for Video Understanding**](https://github.com/DAMO-NLP-SG/Video-LLaMA) <br>
+<!-- > [**Video-LLaMA: An Instruction-tuned Audio-Visual Language Model for Video Understanding**](https://github.com/DAMO-NLP-SG/Video-LLaMA) <br>
 > Hang Zhang, Xin Li, Lidong Bing <br>
 [![github](https://img.shields.io/badge/-Github-black?logo=github)](https://github.com/DAMO-NLP-SG/Video-LLaMA)  [![github](https://img.shields.io/github/stars/DAMO-NLP-SG/Video-LLaMA.svg?style=social)](https://github.com/DAMO-NLP-SG/Video-LLaMA) [![arXiv](https://img.shields.io/badge/Arxiv-2306.02858-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2306.02858) <br>
 
 > [**VCD: Mitigating Object Hallucinations in Large Vision-Language Models through Visual Contrastive Decoding**](https://arxiv.org/abs/2311.16922) <br>
 > Sicong Leng, Hang Zhang, Guanzheng Chen, Xin Li, Shijian Lu, Chunyan Miao, Lidong Bing <br>
-[![github](https://img.shields.io/badge/-Github-black?logo=github)](https://github.com/DAMO-NLP-SG/VCD)  [![github](https://img.shields.io/github/stars/DAMO-NLP-SG/VCD.svg?style=social)](https://github.com/DAMO-NLP-SG/VCD)  [![arXiv](https://img.shields.io/badge/Arxiv-2311.16922-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2311.16922) <br>
+[![github](https://img.shields.io/badge/-Github-black?logo=github)](https://github.com/DAMO-NLP-SG/VCD)  [![github](https://img.shields.io/github/stars/DAMO-NLP-SG/VCD.svg?style=social)](https://github.com/DAMO-NLP-SG/VCD)  [![arXiv](https://img.shields.io/badge/Arxiv-2311.16922-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2311.16922) <br> -->
 
-</p></details>
+<!-- </p></details> --> -->
 
 <!-- <div align="center"><video src="https://github.com/DAMO-NLP-SG/VideoLLaMA2/assets/18526640/e0e7951c-f392-42ed-afad-b2c7984d3e38" width="800"></div>
  -->
@@ -32,8 +32,7 @@ StreamMind: Unlocking Full Frame Rate Streaming Video Dialogue through Event-Gat
 * **[2025.03.18]**  Release training, evaluation, and serving codes of StreamMind.
 
 
-<!-- <img src="https://github.com/xinding-sys/StreamMind/blob/main/assets/framework_v2.pdf" width="800" /> -->
-<a href="https://github.com/xinding-sys/StreamMind/blob/main/assets/framework_v2.pdf">
+<img src="https://github.com/xinding-sys/StreamMind/blob/main/assets/framework_v2.pdf" width="800" />
 
 ## 🛠️ Requirements and Installation
 Basic Dependencies:
