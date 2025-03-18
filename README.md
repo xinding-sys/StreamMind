@@ -1,8 +1,8 @@
-<p align="center">
+<!-- <p align="center">
     <img src="https://github.com/DAMO-NLP-SG/VideoLLaMA2/blob/e7bc34e0e9a96d77947a75b54399d9f96ccf209d/assets/logo.png" width="150" style="margin-bottom: 0.2;"/>
-<p>
+<p> -->
 
-<h3 align="center"><a href="https://arxiv.org/abs/2406.07476" style="color:#9C276A">
+<h3 align="center"><a href="https://arxiv.org/html/2503.06220" style="color:#9C276A">
 StreamMind: Unlocking Full Frame Rate Streaming Video Dialogue through Event-Gated Cognition</a></h3>
 <h5 align="center"> If our project helps you, please give us a star ⭐ on GitHub to support us. 🙏🙏 </h2>
 
@@ -13,7 +13,7 @@ StreamMind: Unlocking Full Frame Rate Streaming Video Dialogue through Event-Gat
 </h5>
 <!-- 
 <details open><summary>💡 Some other multimodal-LLM projects from our team may interest you ✨. </summary><p>
-<!--  may -->
+ may
 
 <!-- > [**Video-LLaMA: An Instruction-tuned Audio-Visual Language Model for Video Understanding**](https://github.com/DAMO-NLP-SG/Video-LLaMA) <br>
 > Hang Zhang, Xin Li, Lidong Bing <br>
@@ -35,7 +35,7 @@ StreamMind: Unlocking Full Frame Rate Streaming Video Dialogue through Event-Gat
 <!-- <img src="https://github.com/xinding-sys/StreamMind/blob/main/assets/framework_v2.png" width="400" /> -->
 <!-- <iframe src="https://raw.githubusercontent.com/xinding-sys/StreamMind/main/assets/framework_v2.pdf" width="800" height="600"></iframe>
  -->
-![overview](./assets/framework_v2.png)
+                       ![overview](./assets/framework_v2.png)
 ## 🛠️ Requirements and Installation
 Basic Dependencies:
 * Python >= 3.10
