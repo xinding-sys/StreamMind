@@ -26,7 +26,7 @@ from dataclasses import dataclass
 from .ssm import VideoMamba
 
 from pytorch_lightning import LightningModule
-from videollama2.constants import IGNORE_INDEX
+from streammind.constants import IGNORE_INDEX
 
 @dataclass
 class SSMConfig:
@@ -412,15 +412,8 @@ class Video_Mamba_seq(LightningModule):
         x = einops.rearrange(x, "b t d -> (b t) d")
         x = self.post_net(x)
         x = einops.rearrange(x, "(b t) d -> b t d", b=b, t=t)
-        # import pdb
-        # pdb.set_trace()
-        # self.videoid += 1
-        # os.mkdir("/home/v-dingxin/videollama2_plus-main/paper/immediate_memory_stc_{}".format(self.videoid))
-        # torch.save(x,"/home/v-dingxin/videollama2_plus-main/paper/immediate_memory_stc_{}/cur_frame_feature.pt".format(self.videoid))
         
         if cls_training or cls_inference:
-            import pdb
-            pdb.set_trace()
             if prompt_time_input_ids is not None and prompt_time_input_ids.numel()>1:
                 pad_token_id = 0
                 input_embeds = []
@@ -500,11 +493,9 @@ class Video_Mamba_seq(LightningModule):
                 start_feature_idx = [0] + frames_features_shape[:-1]
                 for idx, end_frame_idx in enumerate(frames_features_shape):
                     cur_frame_feature = x[0][start_feature_idx[idx] : end_frame_idx]
-                    # torch.save(cur_frame_feature,"/home/v-dingxin/videollama2_plus-main/paper/immediate_memory_stc_{}/cur_frame_feature_{}.pt".format(self.videoid,idx))
 
                     eos_target = self.cls_net.cls_model.model.embed_tokens(torch.tensor([0]).to(x.device))
                     caption_target = self.cls_net.cls_model.model.embed_tokens(torch.tensor([1]).to(x.device))
-                    # ignore_tensor = torch.full(cur_frame_feature[0].unsqueeze(0).shape,IGNORE_INDEX).to(x.device).to(caption_target.dtype)
                     ignore_tensor = torch.tensor([IGNORE_INDEX]).to(x.device)
 
                     if cur_frame_feature.shape[0] > 1:
@@ -518,9 +509,6 @@ class Video_Mamba_seq(LightningModule):
                         caption_label = torch.cat([ignore_tensor, torch.tensor([1]).to(x.device)])
                         input_embeds.append(input_embed)
                         cls_labels.append(caption_label)
-                #last frame
-                # import pdb
-                # pdb.set_trace()
                 input_embeds = torch.cat(input_embeds)
                 cls_labels = torch.cat(cls_labels)
                 input_embed =  einops.rearrange(input_embeds, "(b t) c -> b t c", t=2)
@@ -545,8 +533,6 @@ class Video_Mamba_seq(LightningModule):
                     return cls_output,cls_label
             
         if cls_demo:
-            # import pdb
-            # pdb.set_trace()
             pad_token_id = 0
             input_embeds = []
             # start_feature_idx = [0] + frames_features_shape[:-1]
@@ -557,8 +543,6 @@ class Video_Mamba_seq(LightningModule):
             # start = time.time()
             cls_output = self.cls_net(input_embed, cls_labels = None, cls_attention_mask = cls_attention_mask)
 
-
-            
             return x , cls_output.logits[0][-1]
 
         return x

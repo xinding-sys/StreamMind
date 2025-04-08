@@ -46,7 +46,7 @@ from streammind.model import *
 from streammind.constants import NUM_FRAMES, IGNORE_INDEX, MMODAL_TOKEN_INDEX, DEFAULT_MMODAL_TOKEN, DEFAULT_MMODAL_START_TOKEN, DEFAULT_MMODAL_END_TOKEN
 from streammind.mm_utils import tokenizer_MMODAL_token, tokenizer_image_token, expand2square, process_video, process_image
 from streammind.streammind_trainer_score import (
-    VideoLLaMA2Trainer,
+    StreamMindTrainer,
     maybe_zero_3, get_mm_adapter_state_maybe_zero_3,
     get_peft_state_maybe_zero_3, get_peft_state_non_lora_maybe_zero_3, 
     find_all_linear_names, safe_save_model_for_hf_trainer
@@ -576,7 +576,10 @@ class DataCollatorForstreamDataset(object):
         batch["input_ids"] = instance["input_ids"]
         batch["caption_info"] = instance["caption_info"]
         batch["video_path"] = instance["video_path"]
-        batch["images"] = [instance["video"],["video"]]
+        if "image" in instance.keys():
+            batch["images"] = [instance["image"],["image"]]
+        else:
+            batch["images"] = [instance["video"],["video"]]
         batch["attention_mask"] = None
         batch["past_review_caption"] = instance["past_review_caption"]
         batch["data_type"] = instance["data_type"]
@@ -642,10 +645,6 @@ def make_supervised_stream_data_module(tokenizer: transformers.PreTrainedTokeniz
         data_args=data_args
     )
 
-    # if data_args.soccer_dataset:
-    #     data_collator = DataCollatorForsoccerDataset(tokenizer=tokenizer)
-
-    # elif data_args.ego4d_dataset:
     data_collator = DataCollatorForstreamDataset(tokenizer=tokenizer)
 
     return dict(train_dataset=train_dataset,
@@ -653,8 +652,6 @@ def make_supervised_stream_data_module(tokenizer: transformers.PreTrainedTokeniz
                 data_collator=data_collator)
 
 def get_skip_cls_net_weight(model):
-    # import pdb
-    # pdb.set_trace()
     mm_model = model.model.mm_projector.cls_net.cls_model
     base_model = model.model
 
@@ -728,9 +725,6 @@ def train(attn_implementation=None):
                 **bnb_model_from_pretrained_args
             )
         elif 'mistral' in model_args.model_name_or_path.lower():
-            # import pdb
-            # pdb.set_trace()
-            # model_args.model_name_or_path = "/home/v-dingxin/blob/VideoLLaMA2-7B"
             config = transformers.AutoConfig.from_pretrained(model_args.model_name_or_path, trust_remote_code=True)
             config._attn_implementation = attn_implementation
             model = Videollama2MistralForCausalLM.from_pretrained(
@@ -742,8 +736,6 @@ def train(attn_implementation=None):
                 **bnb_model_from_pretrained_args
             )
         elif 'llama2' in model_args.model_name_or_path.lower():
-            # import pdb
-            # pdb.set_trace()
             config = transformers.AutoConfig.from_pretrained(model_args.model_name_or_path, trust_remote_code=True)
             config._attn_implementation = attn_implementation
             model = Videollama2MistralForCausalLM.from_pretrained(
@@ -882,19 +874,15 @@ def train(attn_implementation=None):
             for p in model.get_model().mm_projector.parameters():
                 p.requires_grad = True
         
-        # import pdb
-        # pdb.set_trace()
+
         if model_args.soccer_dataset_train_cls:
             model.requires_grad_(False)
-            # import pdb
-            # pdb.set_trace()
-            # model.model.layers[0].self_attn.q_proj.weight.requires_grad = True
+           
             for name, p in model.get_model().mm_projector.named_parameters():
                 if "cls" in name:
                     p.requires_grad = True
         else:
-            # model.requires_grad_(False)
-            # model.model.layers[0].self_attn.q_proj.weight.requires_grad = True
+            
             for name, p in model.get_model().mm_projector.named_parameters():
                 if "cls" in name:
                     p.requires_grad = False
@@ -931,118 +919,15 @@ def train(attn_implementation=None):
 
     print("Current model:", model)
  
-
-
-
-    # # import pdb
-    # # pdb.set_trace()
-    # if model_args.eval_llm:
-    #     from torch.utils.data import Dataset, DataLoader
-    #     from tqdm import tqdm
-    #     data_args.data_type = "val"
-    #     data_module = make_supervised_stream_data_module(tokenizer=tokenizer, data_args=data_args)
-    #     def build_score_eval(dataset,data_collator):
-    #         # dataset = LazySupervisedDataset(tokenizer = tokenizer, data_args=args,data_path=None )
-    #         # data_collator = DataCollatorForego4dDataset(tokenizer=tokenizer)
-    #         # import pdb
-    #         # pdb.set_trace()
-    #         dataloader = DataLoader(dataset, batch_size=1, shuffle=False, num_workers=8,collate_fn=data_collator)
-    #         return dataloader
-    #     llm_val_loader = build_score_eval(data_module["train_dataset"],data_module["data_collator"])    
-    #     video_lm_ppls = []
-    #     video_lm_correctness = []
-    #     video_lm_correctness_token = []
-    #     video_token_total = []
-    #     model = model.cuda()
-    #     model.requires_grad_(False)
-    #     for i, inputs in enumerate(tqdm(llm_val_loader)):
-    #         lm_ppls = []
-    #         lm_correctness = []
-
-    #         inputs["input_ids"] = inputs["input_ids"].cuda() 
-    #         inputs["llm_eval"] = True
-    #         output,labels = model(**inputs)
-    #         # print(output.loss)
-    #         labels = labels.cuda()
-    #         logit= output.logits[0]
-
-    #         turns = (labels == 2).nonzero(as_tuple=True)[1].tolist()
-    #         start_turns = [-1]+ turns[:-1]
-    #         token_num = 0
-    #         correct_token_num = 0
-    #         for idx,turn in enumerate(turns):
-    #             turn_logit = logit[start_turns[idx]+1:turn+1]
-    #             turn_label = labels[0][start_turns[idx]+1:turn+1]
-    #             turn_logit = turn_logit[turn_label!=IGNORE_INDEX][:-1]
-    #             turn_label = turn_label[turn_label!=IGNORE_INDEX][1:]
-
-    #             lm_ppl = torch.nn.functional.cross_entropy(turn_logit, turn_label).exp()
-    #             lm_ppls.append(lm_ppl)      
-
-    #             token_num += turn_label.numel()
-    #             turn_lm_masked_correct_mask = turn_logit.argmax(dim=-1) == turn_label
-    #             num_lm_correct_tokens = turn_lm_masked_correct_mask.sum()
-    #             correct_token_num += num_lm_correct_tokens
-    #             lm_correctness.append(num_lm_correct_tokens / turn_label.numel())
-    #         video_lm_ppls.append(sum(lm_ppls)/len(lm_ppls))
-    #         video_lm_correctness.append(sum(lm_correctness)/len(lm_correctness))
-    #         video_lm_correctness_token.append(correct_token_num)
-    #         video_token_total.append(token_num)
-    #         print(video_lm_ppls[-1])
-    #         print(video_lm_correctness[-1])
-
-    #     data_args.soccer_dataset_train_llm=False
-    #     data_module = make_supervised_stream_data_module(tokenizer=tokenizer, data_args=data_args)
-    #     # cls_val_loader = build_score_eval(args,tokenizer)
-    #     cls_val_loader = build_score_eval(data_module["train_dataset"],data_module["data_collator"])    
-    #     time_diffs = []
-    #     time_total = []
-    #     # import pdb
-    #     # pdb.set_trace()
-    #     for i, inputs in enumerate(tqdm(cls_val_loader)):
-    #         inputs["input_ids"] = inputs["input_ids"].cuda() 
-    #         output,labels = model(**inputs)
-    #         eos_logits = output.logits[labels!=IGNORE_INDEX][:-1]
-    #         labels = labels[labels!=IGNORE_INDEX][1:]
-    #         time_total.append(labels.numel())
-    #         eos_wrong_mask = eos_logits.argmax(dim=-1) != labels
-    #         if eos_wrong_mask.any():
-    #             time_diff = eos_wrong_mask.sum()
-    #         else:
-    #             time_diff = 0
-    #         time_diffs.append(time_diff)
-    #         print(time_diffs[-1])
-
-    #     fluency_list = []
-    #     for i , _ in enumerate(video_token_total):
-    #         fluency_list.append((video_lm_correctness_token[i]+time_total[i]-time_diffs[i])/(video_token_total[i]+time_total[i]))
-    #     lm_ppl = sum(video_lm_ppls)/len(video_lm_ppls)
-    #     fluency = sum(fluency_list)/len(fluency_list)
-    #     timediff = sum(time_diffs)/len(time_diffs)
-
-    #     print(lm_ppl,666666666666666666666)
-    #     print(fluency)
-    #     print(timediff)
-
-
-    # data_module = make_supervised_data_module(tokenizer=tokenizer, data_args=data_args)
-    # select a Trainer
     data_module = make_supervised_stream_data_module(tokenizer=tokenizer, data_args=data_args)
 
-    trainer = VideoLLaMA2Trainer(model=model, data_args = data_args, tokenizer=tokenizer, args=training_args, **data_module)
-    # import pdb
-    # pdb.set_trace()
+    trainer = StreamMindTrainer(model=model, data_args = data_args, tokenizer=tokenizer, args=training_args, **data_module)
     if list(pathlib.Path(training_args.output_dir).glob("checkpoint-*")):
         trainer.train(resume_from_checkpoint=True)
         trainer.save_state()
     else:
         if model_args.train_skip_cls:
-            #                                      model.model.layers[0].self_attn.q_proj.weight
-            # model.model.mm_projector.cls_net.cls_model.model.layers[0].self_attn.q_proj.weight
-            # for name, module in model.model.mm_projector.cls_net.cls_model
             get_skip_cls_net_weight(model)
-            # import pdb
-            # pdb.set_trace()
         trainer.train()
        
         trainer.save_state()
