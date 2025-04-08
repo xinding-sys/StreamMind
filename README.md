@@ -2,7 +2,7 @@
     <img src="https://github.com/DAMO-NLP-SG/VideoLLaMA2/blob/e7bc34e0e9a96d77947a75b54399d9f96ccf209d/assets/logo.png" width="150" style="margin-bottom: 0.2;"/>
 <p> -->
 
-<h3 align="center"><a href="https://arxiv.org/html/2503.06220" style="color:#9C276A">
+<h3 align="center"><a href="https://arxiv.org/abs/2503.06220" style="color:#9C276A">
 StreamMind: Unlocking Full Frame Rate Streaming Video Dialogue through Event-Gated Cognition</a></h3>
 <h5 align="center"> If our project helps you, please give us a star ⭐ on GitHub to support us. 🙏🙏 </h2>
 
