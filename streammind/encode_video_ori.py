@@ -41,12 +41,12 @@ from decord import VideoReader, cpu
 from transformers.models.mixtral.modeling_mixtral import MixtralSparseMoeBlock
 
 sys.path.append('./')
-from videollama2 import conversation as conversation_lib
-from videollama2.model import *
-from videollama2.constants import NUM_FRAMES, IGNORE_INDEX, MMODAL_TOKEN_INDEX, DEFAULT_MMODAL_TOKEN, DEFAULT_MMODAL_START_TOKEN, DEFAULT_MMODAL_END_TOKEN
-from videollama2.mm_utils import tokenizer_MMODAL_token, tokenizer_image_token, expand2square, process_video, process_image, process_score_video
-from videollama2.videollama2_trainer_score import (
-    VideoLLaMA2Trainer,
+from streammind import conversation as conversation_lib
+from streammind.model import *
+from streammind.constants import NUM_FRAMES, IGNORE_INDEX, MMODAL_TOKEN_INDEX, DEFAULT_MMODAL_TOKEN, DEFAULT_MMODAL_START_TOKEN, DEFAULT_MMODAL_END_TOKEN
+from streammind.mm_utils import tokenizer_MMODAL_token, tokenizer_image_token, expand2square, process_video, process_image, process_score_video
+from streammind.streammind_trainer_score import (
+    StreamMindTrainer,
     maybe_zero_3, get_mm_adapter_state_maybe_zero_3,
     get_peft_state_maybe_zero_3, get_peft_state_non_lora_maybe_zero_3, 
     find_all_linear_names, safe_save_model_for_hf_trainer
@@ -767,7 +767,7 @@ def train(attn_implementation=None):
     # pdb.set_trace()
     if model_args.vision_tower is not None:
         # initialize vision encoder + multi-modal projector
-        model.get_model().initialize_vision_modules(model_args=model_args, fsdp=training_args.fsdp)#这个是再videollama2中加入clipmodel
+        model.get_model().initialize_vision_modules(model_args=model_args, fsdp=training_args.fsdp)#这个是再streammind中加入clipmodel
 
         vision_tower = model.get_vision_tower()
         vision_tower.to(dtype=torch.bfloat16 if training_args.bf16 else torch.float16, device=training_args.device)

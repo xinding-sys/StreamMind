@@ -6,8 +6,8 @@
 import sys
 sys.path.append('./')
 
-from videollama2.train_new_stream import train
-# from videollama2.train_new_stream import train
+from streammind.train_new_stream import train
+# from streammind.train_new_stream import train
 
 if __name__ == "__main__":
     train(attn_implementation="flash_attention_2")

@@ -13,7 +13,7 @@ import pytz
 import torch
 import torch.distributed as tdist
 
-import videollama2.dist as dist
+import streammind.dist as dist
 
 os_system = functools.partial(subprocess.call, shell=True)
 def echo(info):

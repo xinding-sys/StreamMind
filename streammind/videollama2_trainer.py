@@ -222,7 +222,7 @@ class LengthGroupedSampler(Sampler):
         return iter(indices)
 
 
-class VideoLLaMA2Trainer(Trainer):
+class StreamMindTrainer(Trainer):
 
     def _get_train_sampler(self) -> Optional[torch.utils.data.Sampler]:
         if self.train_dataset is None or not has_length(self.train_dataset):
@@ -361,13 +361,13 @@ class VideoLLaMA2Trainer(Trainer):
                     torch.save(non_lora_state_dict, os.path.join(output_dir, 'non_lora_trainables.bin'))
 
                 # save for acquring lora adapter parameters & trainer states: `adapter_config.json`, `adapter_model.safetensors`
-                super(VideoLLaMA2Trainer, self)._save_checkpoint(model, trial, metrics)
+                super(StreamMindTrainer, self)._save_checkpoint(model, trial, metrics)
             else:
-                super(VideoLLaMA2Trainer, self)._save_checkpoint(model, trial, metrics)
+                super(StreamMindTrainer, self)._save_checkpoint(model, trial, metrics)
 
     def _save(self, output_dir: Optional[str] = None, state_dict=None):
         if getattr(self.args, 'tune_mm_mlp_adapter', False):
             pass
         else:
-            super(VideoLLaMA2Trainer, self)._save(output_dir, state_dict)
+            super(StreamMindTrainer, self)._save(output_dir, state_dict)
     
