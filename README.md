@@ -8,7 +8,7 @@ StreamMind: Unlocking Full Frame Rate Streaming Video Dialogue through Event-Gat
 
 <h5 align="center">
 
-[![arXiv](https://img.shields.io/badge/Arxiv-2503.06220-AD1C18.svg?logo=arXiv)](https://arxiv.org/html/2503.06220v1) <br>
+[![arXiv](https://img.shields.io/badge/Arxiv-2503.06220-AD1C18.svg?logo=arXiv)](https://arxiv.org/abs/2503.06220) <br>
 
 <!-- </h5> -->
 <!-- 
