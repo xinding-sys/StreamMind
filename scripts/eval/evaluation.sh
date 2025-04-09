@@ -23,5 +23,3 @@ python streammind/eval/inference_video_ego4d_stream_parallel_new.py \
 --soccer_dataset \
 --data_type valid \
 --eval_type llm
-
-
