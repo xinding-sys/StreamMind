@@ -1,9 +1,9 @@
 # set -x
 
-EVAL_DATA_DIR=/home/v-dingxin/blob/video_llm/eval
+EVAL_DATA_DIR=video_llm/eval
 OUTPUT_DIR=eval_output
 CKPT_NAME=finetune_videollama2_mamba
-CKPT=/home/v-dingxin/blob/finetune_streammind_live_llm_315_offline
+CKPT=finetune_streammind_live_llm_315_offline
 
 gpu_list="${CUDA_VISIBLE_DEVICES:-0}"
 IFS=',' read -ra GPULIST <<< "$gpu_list"

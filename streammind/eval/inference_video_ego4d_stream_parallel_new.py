@@ -160,9 +160,6 @@ def run_inference_timediff_fluency_ppl_metric(args):
     model = model.to(torch.bfloat16)
 
     if args.eval_type == "llm":
-        # evaluate LLM
-        # import pdb
-        # pdb.set_trace()
         llm_val_loader = build_score_eval(args,tokenizer)
         video_lm_ppls = []
         video_lm_correctness = []
@@ -228,10 +225,6 @@ def run_inference_timediff_fluency_ppl_metric(args):
             video_lm_correctness.append(sum(lm_correctness)/len(lm_correctness))
             video_lm_correctness_token.append(sum(correct_token_num)/len(correct_token_num))
             video_token_total.append(sum(token_num)/len(token_num))
-            # print(video_lm_ppls[-1])
-            # print(video_lm_correctness[-1])
-        # metric = calculate_metrics(pred_caption_list,target_caption_list)
-        # print("llm_evaluate_metric",metric)
         print("llm_evaluate_metric_lm_correctness",sum(video_lm_correctness)/len(video_lm_correctness))
         print("llm_ppl",sum(video_lm_ppls)/len(video_lm_ppls))
         print("llm_evaluate_metric_video_lm_correctness_token",sum(video_lm_correctness_token)/len(video_lm_correctness_token))
@@ -247,11 +240,8 @@ def run_inference_timediff_fluency_ppl_metric(args):
         args.soccer_dataset_train_llm=False
         args.soccer_dataset_train_cls=True
         cls_val_loader = build_score_eval(args,tokenizer)
-        time_diffs = []
-        time_total = []
-        correct_time_total = []
-        accuracy_list = []
-        true_positive_rate_list=[]
+        TriggerAcc_list = []
+        TimeVal_list=[]
         true_negative_rate_list = []
         #calculate timediff 
         os.makedirs(os.path.dirname(args.caption_path),exist_ok=True)
@@ -302,108 +292,33 @@ def run_inference_timediff_fluency_ppl_metric(args):
             
             tolerance_frames = 2
             relaxed_matches = relaxed_correct(eos_labels, pred_labels, tolerance_frames)
-            # 更新 Correct Predictions 和 Accuracy
+            # update Correct Predictions 和 Accuracy
             correct_predictions = relaxed_matches.sum().item()
-            accuracy = correct_predictions / (eos_labels.numel() + 1e-9)
-            print("acc:", accuracy)
-            accuracy_list.append(accuracy)
+            TriggerAcc = correct_predictions / (eos_labels.numel() + 1e-9)
+            TriggerAcc_list.append(TriggerAcc)
 
-            # 更新 true Positive Rate
-            #label是0但是预测为1
+            # update true Positive Rate
             false_positives = (((eos_labels == 0) & (pred_labels == 1)) & ~relaxed_matches).sum().item()
             total_negatives = (eos_labels == 0).sum().item()
             true_positive_rate = 1 - false_positives / (total_negatives + 1e-9)
-            print("True_pos:", true_positive_rate)
-            true_positive_rate_list.append(true_positive_rate)
 
-            # 更新 False Negative Rate
-            #label是1但是预测为0
+            # update False Negative Rate
             false_negatives = (((eos_labels == 1) & (pred_labels == 0)) & ~relaxed_matches).sum().item()
             total_positives = (eos_labels == 1).sum().item()
             True_negative_rate = 1 - false_negatives / (total_positives + 1e-9)
-            print("True_negative:", True_negative_rate)
-            true_negative_rate_list.append(True_negative_rate)
-            
-            #calculate timediff
-            turn_time_total = []
-            turn_correct_time = []
-            for logit,label in zip(logits,labels):
-                eos_logits = logit[label!=IGNORE_INDEX]
-                eos_labels = label[label!=IGNORE_INDEX]
-                # print(eos_logits.argmax(dim=-1),eos_labels)
-                eos_wrong_mask = eos_logits.argmax(dim=-1) != eos_labels
-                if eos_wrong_mask.any():
-                    time_diff = eos_wrong_mask.sum()
-                else:
-                    time_diff = 0
-                # print("time_diff:", time_diff/2)
-                time_diffs.append(time_diff/2)
-                turn_time_total.append(eos_labels.numel())
-                turn_correct_time.append((eos_logits.argmax(dim=-1) == eos_labels).sum())
-            time_total.append(sum(turn_time_total)/len(turn_time_total))
-            correct_time_total.append(sum(turn_correct_time)/len(turn_correct_time))
 
-        print("final acc:", sum(accuracy_list)/len(accuracy_list))
-        print("true_pos:", sum(true_positive_rate_list)/len(true_positive_rate_list))
-        print("true_negative:", sum(true_negative_rate_list)/len(true_negative_rate_list))
-        print("time_diff:", sum(time_diffs)/len(time_diffs))
-        print("totol time",sum(time_total)/len(time_total))
-        print("totol correct time",sum(correct_time_total)/len(correct_time_total))
+            TimeVal_list.append(true_positive_rate*True_negative_rate)
+            
         with open(args.caption_path, mode="a", newline="", encoding="utf-8") as file:
             writer = csv.writer(file)
-            writer.writerow([sum(accuracy_list)/len(accuracy_list), 
-                             sum(true_positive_rate_list)/len(true_positive_rate_list),
-                             sum(true_negative_rate_list)/len(true_negative_rate_list),
-                             sum(time_diffs)/len(time_diffs),
-                             sum(time_total)/len(time_total),
-                             sum(correct_time_total)/len(correct_time_total)])
-        # correct_predictions = (eos_labels == pred_labels).sum().item()
-        # accuracy = correct_predictions / (eos_labels.numel() + 1e-9)
-        # print("acc:", accuracy)
-        # accuracy_list.append(accuracy)
-        # # label 0 预测成 1 的概率 (False Positive Rate)
-        # false_positives = ((eos_labels == 0) & (pred_labels == 1)).sum().item()
-        # total_negatives = (eos_labels == 0).sum().item()
-        # false_positive_rate = false_positives / (total_negatives + 1e-9)
-        # print("false_pos:", false_positive_rate)
-        # false_positive_rate_list.append(false_positive_rate)
-
-        # # label 1 预测成 0 的概率 (False Negative Rate)
-        # false_negatives = ((eos_labels == 1) & (pred_labels == 0)).sum().item()
-        # total_positives = (eos_labels == 1).sum().item()
-        # false_negative_rate = false_negatives / (total_positives + 1e-9)
-        # print("false_negative:", false_negative_rate)
-        # false_negative_rate_list.append(false_negative_rate)
-        
-        
-
-
-
-            
-
-            
-    
-   
+            writer.writerow([sum(TriggerAcc_list)/len(TriggerAcc_list), 
+                             sum(TimeVal_list)/len(TimeVal_list)])
 
 
 if __name__ == "__main__":
-    # parser = argparse.ArgumentParser()
-
-    # parser.add_argument('--model-path', help='', required=True)
-    # parser.add_argument('--video-folder', help='Directory containing video files.', required=True)
-    # parser.add_argument('--question-file', help='Path to the ground truth file containing question.', required=True)
-    # parser.add_argument('--answer-file', help='Path to the ground truth file containing answers.', required=True)
-    # parser.add_argument("--num-chunks", type=int, default=1)
-    # parser.add_argument("--chunk-idx", type=int, default=0)
-    # parser.add_argument("--device", type=str, required=False, default='cuda:0')
-    # parser.add_argument("--batch-size", type=int, default=1)
-    # parser.add_argument("--num-workers", type=int, default=8)
-    # args = parser.parse_args()
-
-    # run_inference(args)
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--model-path', default="/home/v-dingxin/blob/finetune_videollama2_mamba_A100_batch1_newcode_1110/checkpoint-150")
+    parser.add_argument('--model-path', default="")
     parser.add_argument('--caption-path', default="/home/v-dingxin/videollama2_plus-main/videollama2/eval/ours_caption.csv")
     parser.add_argument('--model-name', default=None)
     parser.add_argument('--model-base', default=None)
@@ -417,10 +332,6 @@ if __name__ == "__main__":
     parser.add_argument("--sample_per", type=float, default=0.3)
     parser.add_argument("--sample_type", type=str, default="log")
 
-    # parser.add_argument('--ego4d_dataset', type=bool,default=True)
-    # parser.add_argument('--soccer_dataset_train_llm', type=bool,default=True)
-    # parser.add_argument('--soccer_dataset_train_cls',type=bool, default=False)
-    # parser.add_argument('--soccer_dataset',type=bool, default=False)
     parser.add_argument(
         "--ego4d_dataset",
         action="store_true",
