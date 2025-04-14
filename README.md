@@ -1,7 +1,3 @@
-<!-- <p align="center">
-    <img src="https://github.com/DAMO-NLP-SG/VideoLLaMA2/blob/e7bc34e0e9a96d77947a75b54399d9f96ccf209d/assets/logo.png" width="150" style="margin-bottom: 0.2;"/>
-<p> -->
-
 <h3 align="center"><a href="https://arxiv.org/abs/2503.06220" style="color:#9C276A">
 StreamMind: Unlocking Full Frame Rate Streaming Video Dialogue through Event-Gated Cognition</a></h3>
 <h5 align="center"> If our project helps you, please give us a star ⭐ on GitHub to support us. 🙏🙏 </h2>
@@ -10,28 +6,15 @@ StreamMind: Unlocking Full Frame Rate Streaming Video Dialogue through Event-Gat
 
 [![arXiv](https://img.shields.io/badge/Arxiv-2503.06220-AD1C18.svg?logo=arXiv)](https://arxiv.org/abs/2503.06220) <br>
 
-<!-- </h5> -->
-<!-- 
-<details open><summary>💡 Some other multimodal-LLM projects from our team may interest you ✨. </summary><p>
- may
-
-<!-- > [**Video-LLaMA: An Instruction-tuned Audio-Visual Language Model for Video Understanding**](https://github.com/DAMO-NLP-SG/Video-LLaMA) <br>
-> Hang Zhang, Xin Li, Lidong Bing <br>
-[![github](https://img.shields.io/badge/-Github-black?logo=github)](https://github.com/DAMO-NLP-SG/Video-LLaMA)  [![github](https://img.shields.io/github/stars/DAMO-NLP-SG/Video-LLaMA.svg?style=social)](https://github.com/DAMO-NLP-SG/Video-LLaMA) [![arXiv](https://img.shields.io/badge/Arxiv-2306.02858-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2306.02858) <br>
-
-> [**VCD: Mitigating Object Hallucinations in Large Vision-Language Models through Visual Contrastive Decoding**](https://arxiv.org/abs/2311.16922) <br>
-> Sicong Leng, Hang Zhang, Guanzheng Chen, Xin Li, Shijian Lu, Chunyan Miao, Lidong Bing <br>
-[![github](https://img.shields.io/badge/-Github-black?logo=github)](https://github.com/DAMO-NLP-SG/VCD)  [![github](https://img.shields.io/github/stars/DAMO-NLP-SG/VCD.svg?style=social)](https://github.com/DAMO-NLP-SG/VCD)  [![arXiv](https://img.shields.io/badge/Arxiv-2311.16922-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2311.16922) <br> -->
-
-<!-- </p></details> -->
-
-<!-- <div align="center"><video src="https://github.com/DAMO-NLP-SG/VideoLLaMA2/assets/18526640/e0e7951c-f392-42ed-afad-b2c7984d3e38" width="800"></div>
- -->
 
 ## 📰 News
 * **[2025.03.18]**  Release training, evaluation, and serving codes of StreamMind.
 <div align="center">
     <img src="./assets/framework_v2.png" alt="overview">
+</div>
+
+<div align="center">
+    <a href="./assets/blind_com_demo.mp4">▶️ Click here to watch the demo video</a>
 </div>
 
 ## 🛠️ Requirements and Installation
