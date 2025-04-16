@@ -34,10 +34,10 @@ temp*/
 serve_images/
 temp/
 
-# data folder
-data/
-dataset/
-datasets/
+# # data folder
+# data/
+# dataset/
+# datasets/
 
 # training folder
 wandb
