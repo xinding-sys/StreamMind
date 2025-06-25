@@ -27,8 +27,8 @@ torchrun --nnodes $WORLD_SIZE \
     --master_port=$MASTER_PORT \
     --node_rank $RANK \
     streammind/train_flash_attn_score.py \
-    --score_dataset True \
-    --score_dataset_train_llm True \
+    --soccer_dataset True \
+    --soccer_dataset_train_llm True \
     --output_dir ${OUTP_DIR}/${RUN_NAME}/finetune_${RUN_NAME} \
     --deepspeed scripts/zero2.json \
     --version v1_mistral \
